@@ -28,6 +28,7 @@ urlpatterns = [
     path('students/', include('students.urls', namespace='students')),
     path('newapp/', include('newapp.urls', namespace='newapp')),
     path('dogs/', include('dogs.urls', namespace='dogs')),
+    path('library/', include('library.urls', namespace='library')),
 ]
 
 if settings.DEBUG:

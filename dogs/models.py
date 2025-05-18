@@ -45,6 +45,10 @@ class Dog(models.Model):
         null=True,
         verbose_name="Дата рождения",
         help_text="Введите дату рождения",
+   )
+    views_count = models.PositiveIntegerField(
+        verbose_name="Всего просмотров",
+        default=0,
     )
 
     def __str__(self):

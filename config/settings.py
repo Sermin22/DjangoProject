@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'students',  # Ваше новое приложение
     'courses',  # Ваше новое приложение
-    'newapp',   # Ваше новое приложение
+    'newapp',  # Ваше новое приложение
     'dogs',  # Ваше новое приложение
+    'library',  # Ваше новое приложение
 ]
 
 MIDDLEWARE = [
