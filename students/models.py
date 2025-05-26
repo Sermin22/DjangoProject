@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Student(models.Model):
@@ -16,13 +17,14 @@ class Student(models.Model):
 
     first_name = models.CharField(max_length=150, verbose_name='Имя')
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
-    # email = models.EmailField(default='example@example.com')
+    email = models.EmailField(default='example@example.com')
     year = models.CharField(
         max_length=6,
         choices=YEAR_IN_SCHOOL_CHOICES,
         default=FIRST_YEAR,
         verbose_name='Курс'
     )
+    enrollment_date = models.DateField(default=timezone.now().date(), verbose_name='Дата регистрации')
     # photo = models.ImageField(upload_to='photos/', verbose_name='Фотография')
 
     def __str__(self):

@@ -1,0 +1,12 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Детали автора{% endblock %}
+
+{% block content %}
+    {% include 'library/includes/header.html' %}
+    <h2>{{ author.first_name }} {{ author.last_name }}</h2>
+    <p>Дата рождения: {{ author.birth_date|date:"d M Y" }}</p>
+    <a href="{% url 'library:author_update' author.pk %}" class="btn btn-secondary">Редактировать</a>
+    <a href="{% url 'library:author_delete' author.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'library:author_list' %}" class="btn btn-primary">Вернуться к списку</a>
+{% endblock %}

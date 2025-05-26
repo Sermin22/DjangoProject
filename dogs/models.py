@@ -58,3 +58,40 @@ class Dog(models.Model):
         verbose_name = "Собака"
         verbose_name_plural = "Собаки"
         ordering = ["breed", "name"]
+
+
+class Parent(models.Model):
+    dog = models.ForeignKey(
+        Dog,
+        related_name="parents",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Собака",
+    )
+    name = models.CharField(
+        max_length=100, verbose_name="Кличка собаки", help_text="Введите кличку собаки"
+    )
+    breed = models.ForeignKey(
+        Breed,
+        on_delete=SET_NULL,
+        verbose_name="Порода собаки",
+        help_text="Введите породу собаки",
+        blank=True,
+        null=True,
+        related_name='parent_dogs'
+    )
+    year_born = models.PositiveIntegerField(
+        verbose_name="Год рождения",
+        help_text="Укажите год рождения",
+        default=0,
+        blank=True,
+        null=True,
+    )
+    def __str__(self):
+        return f"{self.name} {self.breed}"
+
+    class Meta:
+        verbose_name = "Собака родитель"
+        verbose_name_plural = "Собаки родители"
+        ordering = ["breed", "name"]

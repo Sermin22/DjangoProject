@@ -1,14 +1,10 @@
 from django.shortcuts import render
-
-# Create your views here.
-# students/views.py
-
-from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Student, MyModel
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.urls import reverse_lazy
+from students.forms import StudentForm
 
 
 def about(request):
@@ -36,6 +32,35 @@ def student_detail(request, student_id):
     student = Student.objects.get(id=student_id)
     context = {'student': student}
     return render(request, 'students/student_detail.html', context)
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    # Вместо fields указываем
+    form_class = StudentForm
+
+    # fields = ['first_name', 'last_name', 'email', 'year', 'enrollment_date']  # Поля модели, которые будут
+    # # включены в форму
+    template_name = 'students/student_form.html'  # Шаблон, который будет использоваться для отображения формы
+    success_url = reverse_lazy('students:student_list')  # URL, на который будет перенаправлен пользователь
+    # после успешной отправки формы
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    # Вместо fields указываем
+    form_class = StudentForm
+    # fields = ['first_name', 'last_name', 'email', 'year', 'enrollment_date']  # Поля модели, которые будут
+    # # включены в форму
+    template_name = 'students/student_form.html'  # Шаблон, который будет использоваться для отображения формы
+    success_url = reverse_lazy('students:student_list')  # URL, на который будет перенаправлен пользователь
+    # после успешной отправки формы
+
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    template_name = 'students/student_confirm_delete.html'
+    success_url = reverse_lazy('students:student_list')
 
 
 class MyModelCreateView(CreateView):

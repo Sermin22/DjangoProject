@@ -3,12 +3,44 @@ from .models import Book, Author
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from .forms import AuthorForm, BookForm
+
+
+class AuthorListView(ListView):
+    model = Author
+    template_name = 'library/author_list.html'  # стандартное имя
+    context_object_name = 'author_list'  # стандартное имя
+
+
+class AuthorDetailView(DetailView):
+    model = Author
+    template_name = 'library/author_detail.html'  # стандартное имя
+    context_object_name = 'author'  # стандартное имя
+
+
+class AuthorDeleteView(DeleteView):
+    model = Author
+    template_name = 'library/author_confirm_delete.html'
+    success_url = reverse_lazy('library:author_list')
+
+
+class AuthorCreateView(CreateView):
+    model = Author
+    form_class = AuthorForm
+    template_name = 'library/author_form.html'
+    success_url = reverse_lazy('library:author_list')
+
+class AuthorUpdateView(UpdateView):
+    model = Author
+    form_class = AuthorForm
+    template_name = 'library/author_form.html'
+    success_url = reverse_lazy('library:books_list')
 
 
 class BooksListView(ListView):
     model = Book
-    template_name = 'library/books_list.html'
-    context_object_name = 'books'
+    template_name = 'library/books_list.html'  # стандартное имя library/book_list.html
+    context_object_name = 'books' # стандартное имя было бы book_list
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -28,14 +60,16 @@ class BookDetailView(DetailView):
 
 class BookCreateView(CreateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
+    # fields = ['title', 'publication_date', 'author']
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:books_list')
 
 
 class BookUpdateView(UpdateView):
     model = Book
-    fields = ['title', 'publication_date', 'author']
+    form_class = BookForm
+    # fields = ['title', 'publication_date', 'author']
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:books_list')
 

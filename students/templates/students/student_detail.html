@@ -9,6 +9,9 @@
     <p>Имя: {{ student.first_name }}</p>
     <p>Фамиля: {{ student.last_name }}</p>
     <p>Курс: {{ student.get_year_display }}</p>
+    <a href="{% url 'students:student_update' student.pk %}" class="btn btn-secondary">Редактировать</a>
+    <a href="{% url 'students:student_delete' student.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'students:student_list' %}" class="btn btn-primary">Назад к списку</a>
 </div>
 {% endblock %}
 
