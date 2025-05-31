@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .forms import AuthorForm, BookForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class AuthorListView(ListView):
@@ -18,19 +19,19 @@ class AuthorDetailView(DetailView):
     context_object_name = 'author'  # стандартное имя
 
 
-class AuthorDeleteView(DeleteView):
+class AuthorDeleteView(LoginRequiredMixin, DeleteView):
     model = Author
     template_name = 'library/author_confirm_delete.html'
     success_url = reverse_lazy('library:author_list')
 
 
-class AuthorCreateView(CreateView):
+class AuthorCreateView(LoginRequiredMixin, CreateView):
     model = Author
     form_class = AuthorForm
     template_name = 'library/author_form.html'
     success_url = reverse_lazy('library:author_list')
 
-class AuthorUpdateView(UpdateView):
+class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     model = Author
     form_class = AuthorForm
     template_name = 'library/author_form.html'
@@ -58,7 +59,7 @@ class BookDetailView(DetailView):
         return context
 
 
-class BookCreateView(CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = BookForm
     # fields = ['title', 'publication_date', 'author']
@@ -66,7 +67,7 @@ class BookCreateView(CreateView):
     success_url = reverse_lazy('library:books_list')
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
     form_class = BookForm
     # fields = ['title', 'publication_date', 'author']
@@ -74,7 +75,7 @@ class BookUpdateView(UpdateView):
     success_url = reverse_lazy('library:books_list')
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     template_name = 'library/book_confirm_delete.html'
     success_url = reverse_lazy('library:books_list')

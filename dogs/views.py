@@ -5,6 +5,7 @@ from dogs.forms import DogForm, ParentForm
 from dogs.models import Dog, Parent
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def base(request):
@@ -35,15 +36,22 @@ class DogDetailView(DetailView):
     #     return obj
 
 
-class DogCreateView(CreateView):
+class DogCreateView(LoginRequiredMixin, CreateView):
     model = Dog
     form_class = DogForm
     # fields = ['name', 'breed', 'photo', 'born_date']
     template_name = 'dogs/dog_form.html' # можно не указывать, это имя ищет по умолчанию
     success_url = reverse_lazy('dogs:dog_list')
 
+    def form_valid(self, form):
+        dog = form.save()
+        user = self.request.user
+        dog.owner = user
+        dog.save()
+        return super().form_valid(form)
 
-class DogUpdateView(UpdateView):
+
+class DogUpdateView(LoginRequiredMixin, UpdateView):
     model = Dog
     form_class = DogForm
     # fields = ['name', 'breed', 'photo', 'born_date']
@@ -74,9 +82,9 @@ class DogUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class DogDeleteView(DeleteView):
+class DogDeleteView(LoginRequiredMixin, DeleteView):
     model = Dog
-    template_name = 'dog_confirm_delete.html' # можно не указывать, это имя ищет по умолчанию
+    template_name = 'dogs/dog_confirm_delete.html' # можно не указывать, это имя ищет по умолчанию
     success_url = reverse_lazy('dogs:dog_list')
 
 

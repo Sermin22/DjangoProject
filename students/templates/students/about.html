@@ -9,21 +9,65 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <!-- Подключение Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-    <title>О нас</title>
+    <title>{% block title %}О нас{% endblock %}</title>
 </head>
 <body>
-    <!-- Пример: вставка статического изображения -->
-    <div class="container mt-3">
-        <img src="/static/images/logo.png" alt="Logo">
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Пример: вставка статического изображения -->
+        <a class="navbar-brand" href="#">
+            <div class="container mt-3">
+            <img src="/static/images/logo.png" alt="Logo" style="width: 50px; height: auto;"/>
+            Сайт разработчика
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'users:logout' %}" style="display: inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link">Выйти</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:login' %}">Вoйти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:register' %}">Регистрация</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
         <h1 class="mt-5">О нас</h1>
         <p class="lead">Добро пожаловать на наш сайт! Мы — команда разработчиков из разных уголков мира, работающая над увлекательными проектами.</p>
+    </div>
+    <header>
+        <section class="py-0 text-center container">
+            <div class="row py-lg-0">
+                <div class="col-lg-12 col-md-8 mx-auto"><h1 class="fw-light">Сайт студенты, библиотека, питомцы</h1>
+                    <p class="lead text-body-secondary">Добро пожаловать на сайт!</p>
+                    <p>
+                        <a href="{% url 'students:student_list' %}" class="btn btn-primary my-2">Студенты</a>
+                        <a href="{% url 'library:books_list' %}" class="btn btn-secondary my-2">Библиотека</a>
+                        <a href="{% url 'dogs:dog_list' %}" class="btn btn-success my-2">Питомцы</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </header>
+    <div class="container mt-5">
+        {% block content %}{% endblock %}
     </div>
     <!-- Пример: подключение статического JS-файла -->
     <script type="text/javascript" src="/static/js/script.js"></script>
     <!-- Подключение Bootstrap JS -->
     <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import TextField, SET_NULL
+from users.models import CustomUser
 
 
 class Breed(models.Model):
@@ -26,7 +27,7 @@ class Dog(models.Model):
     )
     breed = models.ForeignKey(
         Breed,
-        on_delete=SET_NULL,
+        on_delete=models.SET_NULL,
         verbose_name="Порода собаки",
         help_text="Введите породу собаки",
         blank=True,
@@ -49,6 +50,13 @@ class Dog(models.Model):
     views_count = models.PositiveIntegerField(
         verbose_name="Всего просмотров",
         default=0,
+    )
+    owner = models.ForeignKey(
+        CustomUser,
+        verbose_name='Владелец',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     def __str__(self):
@@ -74,7 +82,7 @@ class Parent(models.Model):
     )
     breed = models.ForeignKey(
         Breed,
-        on_delete=SET_NULL,
+        on_delete=models.SET_NULL,
         verbose_name="Порода собаки",
         help_text="Введите породу собаки",
         blank=True,

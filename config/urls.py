@@ -29,6 +29,7 @@ urlpatterns = [
     path('newapp/', include('newapp.urls', namespace='newapp')),
     path('dogs/', include('dogs.urls', namespace='dogs')),
     path('library/', include('library.urls', namespace='library')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
