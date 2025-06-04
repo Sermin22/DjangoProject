@@ -11,6 +11,23 @@
     <a href="{% url 'library:book_update' book.pk %}" class="btn btn-secondary">Редактировать</a>
     <a href="{% url 'library:book_delete' book.pk %}" class="btn btn-danger">Удалить</a>
     <a href="{% url 'library:books_list' %}" class="btn btn-primary">Вернуться к списку</a>
+
+    <div class="container mt-2">
+        {% if 'library.can_review_book' in perms %}
+            <form action="{% url 'library:book_review' book.id %}" method="post">
+                {% csrf_token %}
+                <p><textarea name="review"></textarea></p>
+                <p><button type="submit" class="btn btn-secondary">Рецензировать</button></p>
+            </form>
+        {% endif %}
+
+        {% if 'library.can_review_book' in perms %}
+            <form action="{% url 'library:book_recommend' book.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">Рекомендовать</button>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}
 
 

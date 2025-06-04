@@ -15,9 +15,11 @@
                                     <a href="{% url 'dogs:dog_detail' dog.pk %}">
                                         <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
                                     </a>
+                                    {% if perms.dogs.can_edit_breed and perms.dogs.can_edit_description or user == dog.owner %}
                                     <a href="{% url 'dogs:dog_update' dog.pk %}">
                                         <button type="button" class="btn btn-sm btn-primary">Редактировать</button>
                                     </a>
+                                    {% endif %}
                                     <a href="{% url 'dogs:dog_delete' dog.pk %}">
                                         <button type="button" class="btn btn-sm btn-danger">Удалить</button>
                                     </a>

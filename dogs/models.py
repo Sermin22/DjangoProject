@@ -34,6 +34,12 @@ class Dog(models.Model):
         null=True,
         related_name='dogs'
     )
+    description = TextField(
+        verbose_name="Описание собаки",
+        help_text="Укажите описание собаки",
+        blank=True,
+        null=True,
+    )
     photo = models.ImageField(
         upload_to="dogs/photo",
         blank=True,
@@ -66,6 +72,10 @@ class Dog(models.Model):
         verbose_name = "Собака"
         verbose_name_plural = "Собаки"
         ordering = ["breed", "name"]
+        permissions = [
+            ("can_edit_breed", "Can edit breed"),
+            ("can_edit_description", "Can edit description"),
+        ]
 
 
 class Parent(models.Model):

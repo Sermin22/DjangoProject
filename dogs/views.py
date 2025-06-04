@@ -1,11 +1,13 @@
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from dogs.forms import DogForm, ParentForm
+from dogs.forms import DogForm, ParentForm, DogModeratorForm
 from dogs.models import Dog, Parent
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,  PermissionRequiredMixin
 
 
 def base(request):
@@ -18,7 +20,7 @@ class DogListView(ListView):
     # context_object_name = 'dog_list'  # можно не указывать, это имя ище по умолчанию
 
 
-class DogDetailView(DetailView):
+class DogDetailView(LoginRequiredMixin, DetailView):
     model = Dog
     # template_name = 'dogs/dog_detail.html'  # можно не указывать, это имя ищет по умолчанию
     # context_object_name = 'dog'  # можно не указывать, это имя ищет по умолчанию
@@ -28,6 +30,17 @@ class DogDetailView(DetailView):
         self.object.views_count += 1
         self.object.save()
         return self.object
+
+    # этот функционал, если пользователь владелец собаки, то он может посмотреть
+    # def get_object(self, queryset=None):
+    #     self.object = super().get_object(queryset)
+    #     if self.request.user == self.object.owner:
+    #         self.object.views_count += 1
+    #         self.object.save()
+    #         return self.object
+    #     return PermissionDenied
+
+
     # def get_object(self, queryset=None):
     #     obj = super().get_object(queryset)
     #     obj.views_count += 1
@@ -80,6 +93,14 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return DogForm
+        if user.has_perm("dogs.can_edit_breed") and user.has_perm("dogs.can_edit_description"):
+            return DogModeratorForm
+        raise PermissionDenied
 
 
 class DogDeleteView(LoginRequiredMixin, DeleteView):

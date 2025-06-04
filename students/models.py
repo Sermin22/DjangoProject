@@ -24,7 +24,7 @@ class Student(models.Model):
         default=FIRST_YEAR,
         verbose_name='Курс'
     )
-    enrollment_date = models.DateField(default=timezone.now().date(), verbose_name='Дата регистрации')
+    enrollment_date = models.DateField(default=timezone.now, verbose_name='Дата регистрации')
     # photo = models.ImageField(upload_to='photos/', verbose_name='Фотография')
 
     def __str__(self):
@@ -34,6 +34,10 @@ class Student(models.Model):
         verbose_name = 'студент'
         verbose_name_plural = 'студенты'
         ordering = ['last_name']
+        permissions = [
+            ("can_promote_student", "Can promote student"),
+            ("can_expel_student", "Can expel student"),
+        ]
 
 
 class MyModel(models.Model):

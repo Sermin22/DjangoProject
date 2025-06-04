@@ -21,6 +21,13 @@
                             Четвертый курс
                         {% endif %}
                     </span>
+                    {% if perms.students.can_promote_student %}
+                    <button>Перевести студента</button>
+                    {% endif %}
+
+                    {% if perms.students.can_expel_student %}
+                    <button>Исключить студента</button>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

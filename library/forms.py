@@ -23,6 +23,7 @@ class AuthorForm(forms.ModelForm):
             'placeholder': 'Введите дату рождения в формате "2025-12-31"'
         })
 
+
     def clean(self):
         cleaned_data = super().clean()
         first_name = cleaned_data.get('first_name').lower()  # Приводим имя к нижнему регистру
@@ -55,6 +56,7 @@ class BookForm(forms.ModelForm):
             'placeholder': 'Введите дату публикации в формате "2025-12-31'
         })
         self.fields['author'].widget.attrs.update({'class': 'form-control'})
+        self.fields['author'].label = 'Автор'
 
     def clean(self):
         cleaned_data = super().clean()
