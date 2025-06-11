@@ -6,6 +6,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .forms import AuthorForm, BookForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.core.cache import cache
 
 
 class AuthorListView(ListView):
@@ -13,6 +16,12 @@ class AuthorListView(ListView):
     template_name = 'library/author_list.html'  # стандартное имя
     context_object_name = 'author_list'  # стандартное имя
 
+    def get_queryset(self):
+        queryset = cache.get('authors_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('authors_queryset', queryset, 60 * 15)
+        return queryset
 
 class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
@@ -65,6 +74,7 @@ class RecommendBookView(LoginRequiredMixin, View):
         return redirect('library:book_detail', pk=pk)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class BooksListView(ListView):
     model = Book
     template_name = 'library/books_list.html'  # стандартное имя library/book_list.html
@@ -75,6 +85,7 @@ class BooksListView(ListView):
         return queryset.filter(publication_date__year__gt=1800)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
     template_name = 'library/book_detail.html'

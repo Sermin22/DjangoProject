@@ -8,6 +8,7 @@ from dogs.models import Dog, Parent
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin,  PermissionRequiredMixin
+from dogs.services import get_dogs_from_cache
 
 
 def base(request):
@@ -18,6 +19,9 @@ class DogListView(ListView):
     model = Dog
     # template_name = 'dogs/dog_list.html'  # можно не указывать, это имя ищет по умолчанию
     # context_object_name = 'dog_list'  # можно не указывать, это имя ище по умолчанию
+
+    def get_queryset(self):
+        return get_dogs_from_cache()
 
 
 class DogDetailView(LoginRequiredMixin, DetailView):
