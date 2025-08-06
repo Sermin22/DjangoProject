@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'students',  # Ваше новое приложение
-    'courses',  # Ваше новое приложение
     'newapp',  # Ваше новое приложение
     'dogs',  # Ваше новое приложение
     'library',  # Ваше новое приложение
@@ -133,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # лектор добавил
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # добавил когда ручной деплой с nginx
 
 MEDIA_URL = 'media/'  # Лектор добавил
 MEDIA_ROOT = BASE_DIR / 'media'
