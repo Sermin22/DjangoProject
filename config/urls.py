@@ -25,7 +25,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('students/', include('students.urls', namespace='students')),
+    path('', include('students.urls', namespace='students')),
     path('newapp/', include('newapp.urls', namespace='newapp')),
     path('dogs/', include('dogs.urls', namespace='dogs')),
     path('library/', include('library.urls', namespace='library')),
