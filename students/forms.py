@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
 from .models import Student
+
 
 class StudentForm(forms.ModelForm):
     class Meta:

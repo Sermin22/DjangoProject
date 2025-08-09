@@ -26,4 +26,3 @@ urlpatterns = [
 #     path('item/<int:item_id>/', views.show_item, name='show_item'),
 #     path('list/', views.students_list, name='list')
 # ]
-

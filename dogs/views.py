@@ -1,13 +1,12 @@
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
-from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from dogs.forms import DogForm, ParentForm, DogModeratorForm
 from dogs.models import Dog, Parent
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin,  PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from dogs.services import get_dogs_from_cache
 
 
@@ -44,7 +43,6 @@ class DogDetailView(LoginRequiredMixin, DetailView):
     #         return self.object
     #     return PermissionDenied
 
-
     # def get_object(self, queryset=None):
     #     obj = super().get_object(queryset)
     #     obj.views_count += 1
@@ -57,7 +55,7 @@ class DogCreateView(LoginRequiredMixin, CreateView):
     model = Dog
     form_class = DogForm
     # fields = ['name', 'breed', 'photo', 'born_date']
-    template_name = 'dogs/dog_form.html' # можно не указывать, это имя ищет по умолчанию
+    template_name = 'dogs/dog_form.html'  # можно не указывать, это имя ищет по умолчанию
     success_url = reverse_lazy('dogs:dog_list')
 
     def form_valid(self, form):
@@ -72,7 +70,7 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
     model = Dog
     form_class = DogForm
     # fields = ['name', 'breed', 'photo', 'born_date']
-    template_name = 'dogs/dog_form.html' # можно не указывать, это имя ищет по умолчанию
+    template_name = 'dogs/dog_form.html'  # можно не указывать, это имя ищет по умолчанию
     success_url = reverse_lazy('dogs:dog_list')
 
     def get_success_url(self):
@@ -109,7 +107,7 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
 
 class DogDeleteView(LoginRequiredMixin, DeleteView):
     model = Dog
-    template_name = 'dogs/dog_confirm_delete.html' # можно не указывать, это имя ищет по умолчанию
+    template_name = 'dogs/dog_confirm_delete.html'  # можно не указывать, это имя ищет по умолчанию
     success_url = reverse_lazy('dogs:dog_list')
 
 
@@ -127,4 +125,3 @@ class DogDeleteView(LoginRequiredMixin, DeleteView):
 #         "breed_dog": breed_dog,
 #     }
 #     return render(request, 'dogs/dogs_detail.html', context)
-

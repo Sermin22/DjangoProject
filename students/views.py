@@ -18,7 +18,7 @@ def contact(request):
         message = request.POST.get('message')
         # Обработка данных (например, сохранение в БД, отправка email и т. д.)
         # Здесь мы просто возвращаем простой ответ
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+        return HttpResponse(f"Спасибо, {name}! Ваше сообщение {message} получено.")
     return render(request, 'students/contact.html')
 
 
@@ -113,4 +113,3 @@ class MyModelDeleteView(DeleteView):
 # def show_item(request, item_id):
 #     # Логика для обработки данных элемента с указанным ID
 #     return render(request, 'app/item.html', {'item_id': item_id})
-

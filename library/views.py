@@ -1,5 +1,5 @@
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from .models import Book, Author
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,6 +23,7 @@ class AuthorListView(ListView):
             cache.set('authors_queryset', queryset, 60 * 15)
         return queryset
 
+
 class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
     template_name = 'library/author_detail.html'  # стандартное имя
@@ -35,12 +36,14 @@ class AuthorDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('library:author_list')
     permission_required = 'library.delete_author'
 
+
 class AuthorCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Author
     form_class = AuthorForm
     template_name = 'library/author_form.html'
     success_url = reverse_lazy('library:author_list')
     permission_required = 'library.add_author'
+
 
 class AuthorUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Author
@@ -78,7 +81,7 @@ class RecommendBookView(LoginRequiredMixin, View):
 class BooksListView(ListView):
     model = Book
     template_name = 'library/books_list.html'  # стандартное имя library/book_list.html
-    context_object_name = 'books' # стандартное имя было бы book_list
+    context_object_name = 'books'  # стандартное имя было бы book_list
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import TextField, SET_NULL
+from django.db.models import TextField
 from users.models import CustomUser
 
 
@@ -13,6 +13,7 @@ class Breed(models.Model):
         blank=True,
         null=True,
     )
+
     def __str__(self):
         return self.name
 
@@ -52,7 +53,7 @@ class Dog(models.Model):
         null=True,
         verbose_name="Дата рождения",
         help_text="Введите дату рождения",
-   )
+    )
     views_count = models.PositiveIntegerField(
         verbose_name="Всего просмотров",
         default=0,
@@ -106,6 +107,7 @@ class Parent(models.Model):
         blank=True,
         null=True,
     )
+
     def __str__(self):
         return f"{self.name} {self.breed}"
 

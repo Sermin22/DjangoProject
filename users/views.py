@@ -5,7 +5,6 @@ from django.views.generic import CreateView
 from .forms import CustomUserCreationForm
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth import login
 from .models import CustomUser
 
 
@@ -25,10 +24,10 @@ class RegisterView(CreateView):
         url = f'http://{host}/users/email-confirm/{token}'
         send_mail(
             subject='Добро пожаловать в наш сервис',
-            message = (f'Спасибо, что зарегистрировались в нашем сервисе! '
-                       f'Перейдите по ссылке для подтверждения почты и завершения регистрации {url}'),
-            from_email = settings.EMAIL_HOST_USER,
-            recipient_list = [user.email]
+            message=(f'Спасибо, что зарегистрировались в нашем сервисе! '
+                     f'Перейдите по ссылке для подтверждения почты и завершения регистрации {url}'),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user.email]
         )
         return super().form_valid(form)
 
@@ -38,7 +37,6 @@ def email_verification(request, token):
     user.is_active = True
     user.save()
     return redirect(reverse('users:login'))
-
 
     # это ранее из урока было с Алексеем
     # def form_valid(self, form):

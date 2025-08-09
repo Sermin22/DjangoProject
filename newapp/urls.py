@@ -1,6 +1,6 @@
 from django.urls import path
 from newapp.apps import NewappConfig
-from newapp.views import home
+# from newapp.views import home
 from . import views
 
 # app_name = 'newapp'

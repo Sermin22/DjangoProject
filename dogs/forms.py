@@ -19,10 +19,12 @@ class DogForm(StyleFormMixin, ModelForm):
         model = Dog
         exclude = ("views_count", "owner")
 
+
 class DogModeratorForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Dog
         fields = ("description", "breed")
+
 
 class ParentForm(StyleFormMixin, ModelForm):
     class Meta:
@@ -36,4 +38,3 @@ class ParentForm(StyleFormMixin, ModelForm):
         if time_delta >= 30:
             raise ValidationError('Собак-родитель не может быть старше более чем на 30 лет')
         return year_born
-
