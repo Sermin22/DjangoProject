@@ -74,8 +74,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd /home/sm-admin/DjangoProject
-            docker-compose pull web
-            docker-compose up -d --build web
+            docker-compose pull
+            docker-compose up -d --build
             docker exec web python manage.py migrate
             docker exec web python manage.py collectstatic --noinput
           EOF
