@@ -6,7 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code  # Проверить код flake8
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code  # Тестирование
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -54,7 +54,7 @@ jobs:
       - name: Log in to Docker Hub
         run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
-      - name: Build Docker image  # Сборка образа
+      - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
 
       - name: Push Docker image to Docker Hub
@@ -73,10 +73,23 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            
+            docker network create myapp-net || true
+            
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            docker stop redis || true
+            docker rm redis || true
+            
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            
+            docker run -d --name myapp -p 80:8000 \
+              --env-file /opt/myapp/.env \
+              --network myapp-net \
+              ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          
+          docker exec myapp python manage.py migrate --noinput
+          docker exec myapp python manage.py collectstatic --noinput
           EOF
 
 #      # это вроде автоматизация деплоя без использования Docker
