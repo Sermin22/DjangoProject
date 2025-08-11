@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+
     'students',  # Ваше новое приложение
     'newapp',  # Ваше новое приложение
     'dogs',  # Ваше новое приложение
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # добавил из документации CORS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -156,8 +159,18 @@ if CACHE_ENABLED:
         }
     }
 
+
+# Настройка CORS
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://130.193.45.14",
+    "https://130.193.45.14",
+    "https://frontend.example.com",  # Замените на адрес вашего фронтенд-сервера
+]
+
 CSRF_TRUSTED_ORIGINS = [
-    "http://130.193.45.14",  # Замените на адрес вашего фронтенд-сервера
+    "http://130.193.45.14",
+    "https://130.193.45.14",  # Замените на адрес вашего фронтенд-сервера
     # и добавьте адрес бэкенд-сервера
 ]
 
