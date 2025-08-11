@@ -156,6 +156,11 @@ if CACHE_ENABLED:
         }
     }
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://130.193.45.14/",  # Замените на адрес вашего фронтенд-сервера
+    # и добавьте адрес бэкенд-сервера
+]
+
 # добавили для автоматического тестирования на GitHab Actions
 if "test" in sys.argv:
     DATABASES = {
