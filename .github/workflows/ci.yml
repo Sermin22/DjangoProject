@@ -77,11 +77,8 @@ jobs:
             git pull origin main || true            
             echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
       
-            export DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
-            export TAG=${{ github.sha }}
-            
-            docker-compose pull
-            docker-compose up -d
+            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} TAG=${{ github.sha }} docker-compose pull
+            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} TAG=${{ github.sha }} docker-compose up -d
             docker image prune -f   
           EOF
 
