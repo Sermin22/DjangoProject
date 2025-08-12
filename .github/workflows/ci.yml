@@ -55,10 +55,10 @@ jobs:
         run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/DjangoProject:${{ github.sha }} .
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/DjangoProject:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,13 +73,10 @@ jobs:
       - name: Deploy to Server via docker-compose
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /home/sm-admin/DjangoProject
-            docker-compose pull 
-            docker-compose build --no-cache web
-            docker-compose up -d
-            docker-compose exec -T web python manage.py migrate
-            docker-compose exec -T web python manage.py collectstatic --noinput
-            docker-compose restart nginx
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/DjangoProject:${{ github.sha }}
+            docker stop DjangoProject || true
+            docker rm DjangoProject || true
+            docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/DjangoProject:${{ github.sha }}
           EOF
 
 #      # это вроде автоматизация деплоя без использования Docker
