@@ -75,6 +75,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
             cd /home/sm-admin/DjangoProject
             git pull origin main || true            
+            export DOCKER_HUB_USERNAME=${{ secrets.SSH_USER }}
             export TAG=${{ github.sha }}
             docker-compose pull
             docker-compose up -d
