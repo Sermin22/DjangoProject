@@ -79,6 +79,7 @@ jobs:
       
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} TAG=${{ github.sha }} docker-compose pull
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} TAG=${{ github.sha }} docker-compose up -d
+            docker-compose exec web python manage.py migrate
             docker image prune -f   
           EOF
 
