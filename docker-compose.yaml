@@ -30,6 +30,10 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
        - ./.env
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
 
   redis:
     image: redis:7
