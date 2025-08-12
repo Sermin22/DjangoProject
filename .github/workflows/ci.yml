@@ -73,10 +73,11 @@ jobs:
       - name: Deploy to Server via docker-compose
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-            docker stop myapp || true
-            docker rm myapp || true
-            docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+            cd /home/sm-admin/DjangoProject
+            git pull origin main || true            
+            docker-compose pull            
+            docker-compose up -d --build            
+            docker image prune -f
           EOF
 
 #      # это вроде автоматизация деплоя без использования Docker
