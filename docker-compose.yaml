@@ -1,6 +1,6 @@
 services:
   web:
-    build: .
+    image: username/myapp:${TAG}
     command: sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/app
@@ -11,7 +11,7 @@ services:
       - db
       - redis
     env_file:
-      - ./.env
+      - .env
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
@@ -33,7 +33,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-       - ./.env
+       - .env
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
@@ -44,7 +44,7 @@ services:
     volumes:
       - redis_data:/data
     env_file:
-      - ./.env
+      - .env
 
 volumes:
   postgres_data:
